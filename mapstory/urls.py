@@ -31,13 +31,11 @@ from mapstory.views import initiative_create, initiative_edit, initiative_detail
 from mapstory.views import initiative_invite, initiative_members_add, initiative_member_remove
 from mapstory.views import layer_acls_mapstory, resolve_user_mapstory
 from tastypie.api import Api
-from mapstory.api import UploadedLayerResource
 from annotations.urls import urlpatterns as annotations_urls
 
 
-
 importer_api = Api(api_name='importer-api')
-importer_api.register(UploadedLayerResource())
+
 # -- Deprecated url routes for Geoserver authentication -- remove after GeoNode 2.1
 # -- Use /gs/acls, gs/resolve_user/, gs/download instead
 if 'geonode.geoserver' in settings.INSTALLED_APPS:
