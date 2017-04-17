@@ -1,0 +1,81 @@
+# demo.mapstory.org configuration
+version: '3.1'
+services:
+  pgadmin:
+    ports:
+      - "5050:5050"
+    secrets:
+      - env_db_auth
+
+  elasticsearch:
+    ports:
+      - "9200:9200"
+
+  rabbitmq:
+    secrets:
+      - env_rabbitmq_auth
+    ports:
+      - "15672:15672"
+
+  django:
+    env_file:
+      - docker/env/demo/public_host.env
+      - docker/env/demo/geoserver.env
+      - docker/env/demo/mapstory.env
+    secrets:
+      - env_db_auth
+      - env_email_auth
+      - env_geoserver_auth
+      - env_rabbitmq_auth
+      - env_slack_auth
+      - env_social_auth
+    ports:
+      - "8000:8000"
+
+  celery:
+    env_file:
+      - docker/env/demo/public_host.env
+      - docker/env/demo/geoserver.env
+      - docker/env/demo/mapstory.env
+    secrets:
+      - env_db_auth
+      - env_email_auth
+      - env_geoserver_auth
+      - env_rabbitmq_auth
+      - env_slack_auth
+      - env_social_auth
+
+  geoserver:
+    env_file:
+      - docker/env/demo/public_host.env
+      - docker/env/demo/geoserver.env
+    secrets:
+      - env_db_auth
+      - env_geoserver_auth
+    ports:
+      - "8080:8080"
+
+  nginx:
+    env_file:
+      - docker/env/demo/public_host.env
+    secrets:
+      - ssl_cert
+      - ssl_key
+
+secrets:
+  ssl_cert:
+    file: ../secrets/ssl_cert
+  ssl_key:
+    file: ../secrets/ssl_key
+  env_db_auth:
+    file: ../secrets/env/db_auth
+  env_email_auth:
+    file: ../secrets/env/email_auth
+  env_geoserver_auth:
+    file: ../secrets/env/geoserver_auth
+  env_rabbitmq_auth:
+    file: ../secrets/env/rabbitmq_auth
+  env_slack_auth:
+    file: ../secrets/env/slack_auth
+  env_social_auth:
+    file: ../secrets/env/social_auth

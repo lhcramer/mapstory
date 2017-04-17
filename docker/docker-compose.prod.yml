@@ -1,0 +1,73 @@
+# mapstory.org configuration
+version: '3.1'
+services:
+  pgadmin:
+    ports:
+      - "5050:5050"
+    secrets:
+      - env_db_auth
+
+  elasticsearch:
+
+  rabbitmq:
+    secrets:
+      - env_rabbitmq_auth
+
+  django:
+    env_file:
+      - docker/env/prod/public_host.env
+      - docker/env/prod/geoserver.env
+      - docker/env/prod/mapstory.env
+    secrets:
+      - env_db_auth
+      - env_email_auth
+      - env_geoserver_auth
+      - env_rabbitmq_auth
+      - env_slack_auth
+      - env_social_auth
+
+  celery:
+    env_file:
+      - docker/env/prod/public_host.env
+      - docker/env/prod/geoserver.env
+      - docker/env/prod/mapstory.env
+    secrets:
+      - env_db_auth
+      - env_email_auth
+      - env_geoserver_auth
+      - env_rabbitmq_auth
+      - env_slack_auth
+      - env_social_auth
+
+  geoserver:
+    env_file:
+      - docker/env/prod/public_host.env
+      - docker/env/prod/geoserver.env
+    secrets:
+      - env_db_auth
+      - env_geoserver_auth
+
+  nginx:
+    env_file:
+      - docker/env/prod/public_host.env
+    secrets:
+      - ssl_cert
+      - ssl_key
+
+secrets:
+  ssl_cert:
+    file: ../secrets/ssl_cert
+  ssl_key:
+    file: ../secrets/ssl_key
+  env_db_auth:
+    file: ../secrets/env/db_auth
+  env_email_auth:
+    file: ../secrets/env/email_auth
+  env_geoserver_auth:
+    file: ../secrets/env/geoserver_auth
+  env_rabbitmq_auth:
+    file: ../secrets/env/rabbitmq_auth
+  env_slack_auth:
+    file: ../secrets/env/slack_auth
+  env_social_auth:
+    file: ../secrets/env/social_auth
